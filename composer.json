@@ -1,0 +1,15 @@
+{
+    "name": "private/whatsapp-api",
+    "description": "WhatsApp's private API for PHP",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "beta",
+    "require": {
+        "ramsey/uuid": "^3.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "WhatsAppAPI\\": "src/"
+        }
+    }
+}

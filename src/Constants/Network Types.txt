@@ -1,0 +1,19 @@
+public static final int NETWORK_TYPE_UNKNOWN = 0
+public static final int NETWORK_TYPE_GPRS = 104
+public static final int NETWORK_TYPE_EDGE = 100
+public static final int NETWORK_TYPE_UMTS = 102
+public static final int NETWORK_TYPE_CDMA = 108
+////103///
+public static final int NETWORK_TYPE_EVDO_0
+public static final int NETWORK_TYPE_EVDO_A
+public static final int NETWORK_TYPE_EVDO_B
+//////////
+public static final int NETWORK_TYPE_1xRTT = 109
+public static final int NETWORK_TYPE_HSDPA = 105
+public static final int NETWORK_TYPE_HSUPA = 106
+public static final int NETWORK_TYPE_HSPA = 107
+public static final int NETWORK_TYPE_IDEN = 101
+public static final int NETWORK_TYPE_LTE = 111
+public static final int NETWORK_TYPE_EHRPD = 110
+NotFound = 112
+WIFI = 1
