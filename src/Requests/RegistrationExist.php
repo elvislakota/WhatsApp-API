@@ -3,11 +3,14 @@
 namespace WhatsAppAPI\Requests;
 
 use Ramsey\Uuid\Uuid;
+use WhatsAppAPI\Constants\Constants;
+use WhatsAppAPI\Constants\InternalConstants;
 use WhatsAppAPI\Controllers\client_ID_Controller;
 use WhatsAppAPI\Controllers\clientEntity;
 use WhatsAppAPI\Controllers\Curve25519_Controller;
 use WhatsAppAPI\Controllers\GCM_BlockEngine;
 use WhatsAppAPI\Controllers\token_Generator_Controller;
+use WhatsAppAPI\Curve_DH\Curve25519;
 
 /**
  * Class RegistrationExist
@@ -31,7 +34,7 @@ class RegistrationExist {
 	/**
 	 * @var int $mistyped
 	 */
-	protected $mistyped = -1;
+	protected $mistyped = 6;
 	/**
 	 *
 	 * @var string $offline_ab_exposure
@@ -58,7 +61,7 @@ class RegistrationExist {
 	/**
 	 * @var $simnum int
 	 */
-	protected $simnum;
+	protected $simnum = 1;
 
 	/**
 	 * If the rc2 file is present then this is 1
@@ -73,7 +76,7 @@ class RegistrationExist {
 	 *
 	 * @var int $pid
 	 */
-	protected $pid = 17190;
+	protected $pid = 3400;
 
 	/**
 	 * More info in RC_Info.txt under /src/Constants/
@@ -88,6 +91,11 @@ class RegistrationExist {
 	 * @var string $serverPublicKey
 	 */
 	protected $serverPublicKey = 'jowPdMPrxdemhlxsPIQ4VrBhIczo6ndNIvtvEiUSMC0=';
+
+	/**
+	 * @var string
+	 */
+	protected $encodedReq = "";
 
 	/**
 	 * RegistrationExist constructor.
@@ -106,36 +114,29 @@ class RegistrationExist {
 		$this->token = $token_controller->encodeToken();
 		$this->uuid = $uuid4->toString() . $this->bchexdec($uuid4->getMostSignificantBitsHex()) . $this->bchexdec($uuid4->getLeastSignificantBitsHex());
 		$this->expid = base64_encode($this->uuid);
-		$this->simnum = $clientEntity->getCc() . $clientEntity->getIn();
 
-		$curve25519 = new Curve25519_Controller();
+		$curve25519 = new Curve25519();
 
-		$keyAgreement = $curve25519->calculateAgreement(base64_decode($this->serverPublicKey));
-		$GCM = new GCM_BlockEngine($keyAgreement, $curve25519->getPublicKey());
+		$privateKey = $curve25519->generatePrivateKey();
+		$publicKey = $curve25519->generatePublicKey($privateKey);
 
+		$serverPublicKey = base64_decode('jowPdMPrxdemhlxsPIQ4VrBhIczo6ndNIvtvEiUSMC0=');
+
+
+		$keyAgreement = $curve25519->calculateAgreement($privateKey, $serverPublicKey);
+		$GCM = new GCM_BlockEngine($keyAgreement, $publicKey);
 
 		$query = $this->build_http_query();
 
-		$enc = $GCM->encryptExistRequest($query);
-		echo $query, PHP_EOL,PHP_EOL;
-
-		$requestEncoded = $this->base64url_encode($enc, true);
-		echo $requestEncoded;
-
-		return $requestEncoded;
-
+		$this->encodedReq = $GCM->encryptExistRequest($query);
 
 	}
 
 	/**
-	 * @param string $data The data to encode
-	 * @param bool $usePadding If true, the "=" padding at end of the encoded value are kept, else it is removed
-	 *
-	 * @return string The data encoded
+	 * @return string
 	 */
-	public static function base64url_encode(string $data, bool $usePadding = false): string {
-		$encoded = strtr(base64_encode($data), '+/', '-_');
-		return true === $usePadding ? $encoded : rtrim($encoded, '=');
+	public function getEncodedReq() {
+		return $this->encodedReq;
 	}
 
 	/**
@@ -149,19 +150,24 @@ class RegistrationExist {
 			"in" => $this->clientEntity->getIn(),
 			"lg" => $this->clientEntity->getLg(),
 			"lc" => $this->clientEntity->getLc(),
-			//TEST
-
-			//TEST
 			"id" => $this->getId(),
 			"token" => $this->getToken(),
 			"mistyped" => $this->getMistyped(),
-			"offline_ab_exposure" => $this->getOfflineAbExposure(),
-			"fdid" => '',               //TODO
+			"offline_ab_exposure" => "",
+			"authkey" => "",        //TODO: FIND OUT
+			"e_regid" => "",        //TODO: FIND OUT
+			"e_keytype" => "",      //TODO: FIND OUT
+			"e_ident" => "",        //TODO: FIND OUT
+			"e_skey_id" => "",      //TODO: FIND OUT
+			"e_skey_val" => "",     //TODO: FIND OUT
+			"e_skey_sig" => "",     //TODO: FIND OUT
+			"fdid" => "",           //TODO: FIND OUT
+			"expid" => "",          //TODO: FIND OUT
 			"network_radio_type" => $this->getNetworkRadioType(),
 			"simnum" => $this->getSimnum(),
 			"hasinrc" => $this->hasinrc,
 			"pid" => $this->getPid(),
-			"rc" => $this->getRc()
+			"rc" => $this->getRc(),
 		];
 
 		$query_array = [];

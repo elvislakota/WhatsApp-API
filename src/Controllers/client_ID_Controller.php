@@ -41,11 +41,11 @@ class client_ID_Controller extends InternalConstants {
 	 * @throws \Exception
 	 */
 	public function __encryptID() {
-		$tmpArray = [0, 2];
+		$tmpArray = base64_decode("rO0=");
 		$a = 4;
 		$b = 16;
 		$c = 20;
-		$d = count($tmpArray);
+		$d = count($tmpArray); //TODO: REPAIR THIS
 		$all = $this->add($d, $a, $b, $c);
 
 		$rcFileLen = $this->getFileLength();
@@ -80,10 +80,8 @@ class client_ID_Controller extends InternalConstants {
 
 
 			$enc = openssl_encrypt($rcData,'AES-128-OFB', $secretKey, OPENSSL_ZERO_PADDING,$iv);
-			$dec = openssl_decrypt($enc,'AES-128-OFB',$secretKey);
-			echo $dec, PHP_EOL;
-			echo $enc, PHP_EOL;
-			echo $dec, PHP_EOL;
+
+
 			return $enc;
 
 

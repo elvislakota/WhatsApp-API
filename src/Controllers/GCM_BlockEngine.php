@@ -6,26 +6,12 @@ namespace WhatsAppAPI\Controllers;
  * Class GCM_BlockEngine
  * @package WhatsAppAPI\Controllers
  */
-/**
- * Class GCM_BlockEngine
- * @package WhatsAppAPI\Controllers
- */
 class GCM_BlockEngine {
 
 	/**
 	 * @var string
 	 */
 	protected $keyAgreement;
-
-	/**
-	 * @var string
-	 */
-	protected $IV;
-
-	/**
-	 * @var bool|string
-	 */
-	protected $zeroByte ;
 
 	/**
 	 * @var $userPublicKey string
@@ -37,11 +23,9 @@ class GCM_BlockEngine {
 	 * @param string $keyAgreement
 	 * @param string $userPublicKey
 	 */
-	public function __construct( $keyAgreement, $userPublicKey) {
+	public function __construct($keyAgreement, $userPublicKey) {
 		$this->keyAgreement = $keyAgreement;
-		$this->userPublicKey =  $userPublicKey;
-		$this->IV = base64_decode('AAAAAAAAAAAAAAAAsd');
-		$this->zeroByte = base64_decode('sd');
+		$this->userPublicKey = $userPublicKey;
 	}
 
 	/**
@@ -49,11 +33,13 @@ class GCM_BlockEngine {
 	 *
 	 * @return string
 	 */
-	public function encryptExistRequest($encQuery){
-		$TAG = null;
+	public function encryptExistRequest($encQuery) {
+		$jarFileName = dirname(__DIR__).'\\java_exec\\PHP_Encrypt_helper.jar';
 
-
-		$encrypted = openssl_encrypt($encQuery, 'aes-128-gcm', $this->keyAgreement, 0,$this->IV, $ta, $this->zeroByte);
-		return $this->userPublicKey . $encrypted;
+		$data = "encryptExistRequest " . base64_encode($this->keyAgreement) . " " . base64_encode($this->userPublicKey) . " " . base64_encode($encQuery);
+		$aesN = shell_exec("java -jar " . $jarFileName . " " . $data);
+		return $aesN;
 	}
+
+
 }
