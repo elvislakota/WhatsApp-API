@@ -1,6 +1,6 @@
 # WhatsApp-API
 
-#This repo has the potential to be the first WhatsApp private api for PHP
+This repo has the potential to be the first WhatsApp private api for PHP
 
 ## Introduction
 
@@ -22,7 +22,9 @@ You need to have java installed, because java is needed for the AES-128-GCM Encr
 
 ### At start Time WhatsApp Checks if number was already registered
 Request URL: `https://v.whatsapp.net/v2/exist`
+
 GET Param: 
+
 - `ENC`: Base64 encoded value of final output.
 
 Parameters needed for Exists call:
