@@ -73,6 +73,7 @@ you will get the following response
 `{"login":"15417543010","status":"fail","reason":"bad_param","param":"expid"}`
 
 # Contributing
+If you would like to contribute to this project, please feel free to submit a pull request.
 
 Contributions are **welcome** and will be fully **credited**.
 
