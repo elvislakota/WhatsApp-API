@@ -13,9 +13,10 @@ You Need!
 
 0. Brain
 1. Use PHP 7.1.25
-2. [Install composer](https://getcomposer.org/).
-3. [Install Java](https://www.java.com/en/download/).
-4. You need to get your rc2 file from your android device
+2. [Install the libsodium PHP extension from PECL.](https://paragonie.com/book/pecl-libsodium/read/00-intro.md#installing-libsodium).
+3. [Install composer](https://getcomposer.org/).
+4. [Install Java](https://www.java.com/en/download/).
+5. You need to get your rc2 file from your android device
 
 You need to have java installed, because java is needed for the AES-128-GCM Encryption
 
