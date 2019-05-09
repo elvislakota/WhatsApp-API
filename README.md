@@ -42,7 +42,7 @@ Parameters needed for Exists call:
 - `e_skey_sig` : ``,     //TODO: FIND OUT
 - `fdid` : ``,           //TODO: FIND OUT
 - `expid` : ``,          //TODO: FIND OUT
-- `network_radio_type` : 1 [See RC Info](https://github.com/socialAPIS/WhatsApp-API/blob/master/src/Constants/Network%20Types.txt)
+- `network_radio_type` : 1 [See Network Type Info](https://github.com/socialAPIS/WhatsApp-API/blob/master/src/Constants/Network%20Types.txt)
 - `simnum` : 1 or MSISDN
 - `hasinrc` : Has in the rc2 file if yes then 1 else 0,
 - `pid` : Process ID
